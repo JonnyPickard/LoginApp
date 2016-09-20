@@ -18,13 +18,6 @@ var db      = mongoose.connection;
 //Init app
 var app     = express();
 
-//Set routes
-var routes  = require('./routes/index');
-var users   = require('./routes/users');
-app.use('/', routes);
-app.use('/users', users);
-
-
 //View engine
 app.set('views', path.join(__dirname, 'views'));
 
@@ -32,8 +25,10 @@ app.engine('handlebars', exphbs({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
 
 //bodyParser middleware
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(bodyParser.json());
+
 app.use(cookieParser());
 
 //Set static folder
@@ -79,6 +74,12 @@ app.use(function(req, res, next){
   res.locals.error = req.flash('error');
   next();
 });
+
+//Set routes
+var routes  = require('./routes/index');
+var users   = require('./routes/users');
+app.use('/', routes);
+app.use('/users', users);
 
 //Set port
 app.set('port', (process.env.PORT || 3000));
