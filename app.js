@@ -11,6 +11,10 @@ var LocalStrategy     = require('passport-local').Strategy;
 var mongo             = require('mongodb');
 var mongoose          = require('mongoose');
 
+//Set routes
+var routes  = require('./routes/index');
+var users   = require('./routes/users');
+
 //Set up db
 mongoose.connect('mongodb://localhost/loginapp');
 var db      = mongoose.connection;
@@ -72,12 +76,11 @@ app.use(function(req, res, next){
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
   next();
 });
 
-//Set routes
-var routes  = require('./routes/index');
-var users   = require('./routes/users');
+//Use routes
 app.use('/', routes);
 app.use('/users', users);
 
